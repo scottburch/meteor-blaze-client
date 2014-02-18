@@ -1,0 +1,3 @@
+[submodule "vendor/meteor"]
+	path = vendor/meteor
+	url = https://github.com/meteor/meteor.git
