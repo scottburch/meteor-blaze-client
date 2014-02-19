@@ -1,9 +1,11 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
+var compressor = require('yuicompressor');
 
 var buildDir = normalize('build');
 var meteorCmd = normalize('vendor/meteor/meteor');
 var outJS = normalize('meteor-blaze-client.js');
+var outMinified = normalize('meteor-blaze-client.min.js');
 
 
 
@@ -16,7 +18,24 @@ createMeteorProject()
     .then(createJS)
     .then(cleanupJSFile)
     .then(removeBuildDir)
+    .then(writeMinified)
 
+
+function writeMinified() {
+    console.log('minifying js');
+    compressor.compress(outJS, {
+        //Compressor Options:
+        charset: 'utf8',
+        type: 'js',
+//        nomunge: true,
+        'line-break': 80
+    }, function(err, data, extra) {
+        fs.writeFileSync(outMinified, data);
+        //err   If compressor encounters an error, it's stderr will be here
+        //data  The compressed string, you write it out where you want it
+        //extra The stderr (warnings are printed here in case you want to echo them
+    });
+}
 
 function cleanupJSFile() {
     console.log('cleaning js file');
