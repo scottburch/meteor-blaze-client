@@ -2,12 +2,10 @@
 <html>
 <head>
     <script src="../meteor-blaze-client.js"></script>
+    <script src="helpers/test2Helper.js"></script>
 
     <script>
         MBC.onTemplatesLoaded(function() {
-            Template.test2.showBar = function() {
-                return '==='+this.bar+'===';
-            }
 
             Template.test.foo = function () {
                 return Session.get('testing');
