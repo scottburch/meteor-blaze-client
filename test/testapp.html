@@ -6,7 +6,15 @@
 
     <script type="html/template">
         <template name="test">
+            <div>
             foo = {{foo}}
+            </div>
+            <div>
+                {{> test2 bar="test bar"}}
+            </div>
+        </template>
+        <template name="test2">
+            bar = {{bar}}
         </template>
     </script>
 
