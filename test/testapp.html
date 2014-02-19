@@ -11,10 +11,6 @@
     </script>
 
     <script>
-
-    </script>
-
-    <script>
         $('script[type="html/template"]').each(function(idx, el) {
             MBC.scanHtml(($(el).html()));
         });
@@ -34,9 +30,7 @@
 </head>
 <body>
 <h1>Body</h1>
-    <div id="tempTemplate">
-
-    </div>
+    <div id="tempTemplate"></div>
 
     <script>
         MBC.renderTemplate('test', '#tempTemplate');
