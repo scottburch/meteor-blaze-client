@@ -16,9 +16,7 @@
 
     <script>
         $('script[type="html/template"]').each(function(idx, el) {
-            el = $(el);
-            var r = html_scanner.scan(el.html());
-            r.js && eval(r.js);
+            MBC.scanHtml(($(el).html()));
         });
 
         Template.test.foo = function() {

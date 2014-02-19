@@ -6,5 +6,9 @@
         el && UI.DomRange.insert(UI.render(Template[templateName]).dom, el);
     };
 
+    MBC.scanHtml = function(html) {
+        var r = html_scanner.scan(html);
+        r.js && eval(r.js);
+    };
 
 }(this));
