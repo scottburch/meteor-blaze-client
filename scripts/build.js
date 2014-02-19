@@ -14,7 +14,15 @@ createMeteorProject()
     .then(bundleProject)
     .then(unpackBundle)
     .then(createJS)
+    .then(cleanupJSFile)
     .then(removeBuildDir)
+
+
+function cleanupJSFile() {
+    console.log('cleaning js file');
+    return execute('cat ' + outJS + '|grep -v DDP|grep -v Autoupdate > '+outJS + '.clean; rm ' + outJS + ';mv '+outJS + '.clean '+outJS);
+}
+
 
 function removeBuildDir() {
     rmDirRecursive(buildDir);
