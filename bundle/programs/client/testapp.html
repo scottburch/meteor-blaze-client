@@ -37,8 +37,6 @@
     <script type="text/javascript" src="packages/spacebars.js?dad2d487bcc43e537226e528539ce6389ad6ca4e"></script>
     <script type="text/javascript" src="packages/templating.js?50df2690cc171e5e336786cd849707a03f3f1da7"></script>
     <script type="text/javascript" src="packages/global-imports.js?d9df7325f9fa398985dccdaddf95293546c94483"></script>
-    <script type="text/javascript" src="app/template.test.js?a4edef1eb4dd56540f7397d9db2396761a24aa21"></script>
-    <script type="text/javascript" src="app/test.js?b29ffccaa7068278bc17422491e587c06e79f050"></script>
 
 
     <script src="../../../vendor/meteor/packages/html-tools/parse.js"></script>
@@ -56,14 +54,36 @@
     <script src="../../../vendor/meteor/packages/spacebars-compiler/tokens.js"></script>
     <script src="../../../vendor/meteor/packages/spacebars-compiler/spacebars-compiler.js"></script>
 
+    <script type="html/template">
+        <template name="test">
+            foo = {{foo}}
+        </template>
+    </script>
 
     <script>
-        var t = html_scanner.scan('<head><title>test title</title></head><body>test body{{> test}}</body><template name="test">{{foo}} testing</template>', 'test.html');
-        console.log(t.js);
-        console.log(t.head);
-        console.log(t.body);
-        eval(t.js);
-        eval(t.body);
+        var bodyTemplate = '';
+        $('script[type="html/template"]').each(function(idx, el) {
+            el = $(el);
+            var r = html_scanner.scan(el.html());
+            r.js && eval(r.js);
+        });
+
+
+
+//        var t = html_scanner.scan('<head><title>test title</title></head><body>test body{{> test}}</body><template name="test">{{foo}} testing</template>', 'test.html');
+//        eval(t.js);
+
+        Template.test.foo = function() {
+            return Session.get('testing');
+      };
+
+
+
+        setTimeout(function() {
+            Session.set('testing', 'THIS IS FOO AGAIN');
+        },2000);
+
+
 
 
     </script>
@@ -72,6 +92,13 @@
     <title>test</title>
 </head>
 <body>
+<h1>Body</h1>
+    <div id="tempTemplate">
 
+    </div>
+
+    <script>
+        UI.DomRange.insert(UI.render(Template.test).dom, document.querySelector('#tempTemplate'));
+    </script>
 </body>
 </html>
