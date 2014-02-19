@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +6,7 @@
     <script type="html/template">
         <template name="test">
             <div>
-            foo = {{foo}}
+                foo = {{foo}}
             </div>
             <div>
                 {{> test2 bar="test bar"}}
@@ -15,21 +14,31 @@
         </template>
         <template name="test2">
             bar = {{bar}}
+            {{showBar}}
         </template>
     </script>
 
     <script>
-        $('script[type="html/template"]').each(function(idx, el) {
-            MBC.scanHtml(($(el).html()));
+        MBC.onTemplatesLoaded(function() {
+            Template.test2.showBar = function() {
+                return '==='+this.bar+'===';
+            }
+
+            Template.test.foo = function () {
+                return Session.get('testing');
+            };
+
+            setTimeout(function () {
+                Session.set('testing', 'THIS IS FOO AGAIN');
+            }, 2000);
         });
 
-        Template.test.foo = function() {
-            return Session.get('testing');
-      };
 
-        setTimeout(function() {
-            Session.set('testing', 'THIS IS FOO AGAIN');
-        },2000);
+        $('script[type="html/template"]').each(function (idx, el) {
+            MBC.scanHtml(($(el).html()));
+        });
+        MBC.templatesLoaded();
+
 
     </script>
 
@@ -38,10 +47,13 @@
 </head>
 <body>
 <h1>Body</h1>
-    <div id="tempTemplate"></div>
 
-    <script>
-        MBC.renderTemplate('test', '#tempTemplate');
-    </script>
+<div id="tempTemplate"></div>
+
+<script>
+    MBC.renderTemplate('test', '#tempTemplate');
+
+
+</script>
 </body>
 </html>
