@@ -7,6 +7,7 @@ var meteorCmd = normalize('vendor/meteor/meteor');
 
 
 
+
 remakeDir(distDir);
 remakeDir(buildDir);
 
@@ -33,9 +34,10 @@ function bundleProject() {
 }
 
 function copyMeteorFiles(error, stdout, stderr) {
-    if(error !== null) {
-        error(error);
-    }
+    console.log('copying meteor files');
+    var files = [
+
+    ]
 }
 
 function execute(command, options, cb) {
