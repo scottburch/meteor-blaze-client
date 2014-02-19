@@ -21,11 +21,7 @@
     <script type="text/javascript" src="packages/ordered-dict.js?bf8af2f26c8d96bf8b2e6b407d3ed69f23c2cd37"></script>
     <script type="text/javascript" src="packages/geojson-utils.js?81b79d5cf96d00b4b7a28987debcffb665c17526"></script>
     <script type="text/javascript" src="packages/minimongo.js?cc3ce9a489c69badc41095301076ba2a65f7ee32"></script>
-    <!--script type="text/javascript" src="packages/livedata.js?bdd3590efbcd8c64952cdafd345700a3fef2b4e6"></script-->
-    <!--script type="text/javascript" src="packages/follower-livedata.js?39b05f02878030ae806a16a173661b7df1e92eb6"></script-->
     <script type="text/javascript" src="packages/application-configuration.js?fa92020e10c808f1287070d009f69a4054676e5a"></script>
-    <!--script type="text/javascript" src="packages/mongo-livedata.js?e4652f6f30df151f2cebf5ad32ae8a8c13fcb846"></script-->
-    <!--script type="text/javascript" src="packages/autoupdate.js?85a69577c7e94226061fb2c886f23080a9163712"></script-->
     <script type="text/javascript" src="packages/standard-app-packages.js?601dc02c741b437bbe8be03773a37f7d896a88e7"></script>
     <script type="text/javascript" src="packages/webapp.js?87383e62e7a152277571ae1a71f7f8198ebd7a8a"></script>
     <script type="text/javascript" src="packages/reactive-dict.js?22667928acc72f619ce81e7ac1e35def1ba9e0ae"></script>
@@ -61,6 +57,15 @@
     </script>
 
     <script>
+        Crater = {
+            renderTemplate: function(templateName, elOrSelector) {
+                var el = _.isString(elOrSelector) ? $(elOrSelector).get(0) : elOrSelector;
+                el && UI.DomRange.insert(UI.render(Template[templateName]).dom, el);
+            }
+        }
+    </script>
+
+    <script>
         var bodyTemplate = '';
         $('script[type="html/template"]').each(function(idx, el) {
             el = $(el);
@@ -68,23 +73,13 @@
             r.js && eval(r.js);
         });
 
-
-
-//        var t = html_scanner.scan('<head><title>test title</title></head><body>test body{{> test}}</body><template name="test">{{foo}} testing</template>', 'test.html');
-//        eval(t.js);
-
         Template.test.foo = function() {
             return Session.get('testing');
       };
 
-
-
         setTimeout(function() {
             Session.set('testing', 'THIS IS FOO AGAIN');
         },2000);
-
-
-
 
     </script>
 
@@ -98,7 +93,7 @@
     </div>
 
     <script>
-        UI.DomRange.insert(UI.render(Template.test).dom, document.querySelector('#tempTemplate'));
+        Crater.renderTemplate('test', '#tempTemplate');
     </script>
 </body>
 </html>
