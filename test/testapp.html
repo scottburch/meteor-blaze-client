@@ -3,17 +3,6 @@
 <head>
     <script src="../meteor-blaze-client.js"></script>
 
-    <script type="html/template">
-        <template name="test">
-            <div>
-                foo = {{foo}}
-            </div>
-            <div>
-                {{> test2 bar="test bar"}}
-            </div>
-        </template>
-    </script>
-
     <script>
         MBC.onTemplatesLoaded(function() {
             Template.test2.showBar = function() {
@@ -32,14 +21,7 @@
 
         });
 
-        MBC.loadTemplate('templates/test2.html', function() {
-            MBC.templatesLoaded();
-        });
-
-        $('script[type="html/template"]').each(function (idx, el) {
-            MBC.scanHtml(($(el).html()));
-        });
-
+        MBC.loadTemplates(['templates/test.html', 'templates/test2.html'], MBC.templatesLoaded);
 
     </script>
 
