@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="../meteor-blaze-client.min.js"></script>
+    <script src="../meteor-blaze-client.js"></script>
 
     <script type="html/template">
         <template name="test">
@@ -11,10 +11,6 @@
             <div>
                 {{> test2 bar="test bar"}}
             </div>
-        </template>
-        <template name="test2">
-            bar = {{bar}}
-            {{showBar}}
         </template>
     </script>
 
@@ -31,13 +27,18 @@
             setTimeout(function () {
                 Session.set('testing', 'THIS IS FOO AGAIN');
             }, 2000);
+
+            MBC.renderTemplate('test', '#tempTemplate');
+
         });
 
+        MBC.loadTemplate('templates/test2.html', function() {
+            MBC.templatesLoaded();
+        });
 
         $('script[type="html/template"]').each(function (idx, el) {
             MBC.scanHtml(($(el).html()));
         });
-        MBC.templatesLoaded();
 
 
     </script>
@@ -50,10 +51,5 @@
 
 <div id="tempTemplate"></div>
 
-<script>
-    MBC.renderTemplate('test', '#tempTemplate');
-
-
-</script>
 </body>
 </html>

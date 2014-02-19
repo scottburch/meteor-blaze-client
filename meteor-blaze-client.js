@@ -29397,4 +29397,18 @@ Spacebars._beautify = beautify;
 
     MBC.onTemplatesLoaded = onTemplatesLoadedListeners.push.bind(onTemplatesLoadedListeners);
 
+    MBC.loadTemplates = function(templateFiles, cb) {
+        $.get(templateFiles[0], function(html) {
+            MBC.scanHtml(html);
+            templateFiles.length > 1 ? MBC.loadTemplates(templateFiles.slice(1)) : cb();
+        });
+    };
+
+    MBC.loadTemplate = function(filename, cb) {
+        $.get(filename, function(text) {
+            MBC.scanHtml(text);
+            cb();
+        });
+    }
+
 }(this));
