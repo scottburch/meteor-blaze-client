@@ -1,14 +1,13 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
 
-var distDir = normalize('dist');
-var buildDir = normalize('dist/build');
+var buildDir = normalize('build');
 var meteorCmd = normalize('vendor/meteor/meteor');
+var outJS = normalize('meteor-blaze-client.js');
 
 
 
 
-remakeDir(distDir);
 remakeDir(buildDir);
 
 createMeteorProject()
@@ -23,19 +22,19 @@ function removeBuildDir() {
 
 function unpackBundle() {
     console.log('unpacking bundle');
-    return execute('tar xzf temp.tar.gz', {cwd: normalize('dist/build/meteorProject')});
+    return execute('tar xzf temp.tar.gz', {cwd: buildDir + '/meteorProject'});
 }
 
 
 
 function createMeteorProject() {
     console.log('creating meteor project');
-    return execute(meteorCmd + ' create meteorProject', {cwd: normalize('dist/build')});
+    return execute(meteorCmd + ' create meteorProject', {cwd: buildDir});
 }
 
 function bundleProject() {
     console.log('bundling meteor project');
-    return execute(meteorCmd + ' bundle temp.tar.gz --debug', {cwd: normalize('dist/build/meteorProject')});
+    return execute(meteorCmd + ' bundle temp.tar.gz --debug', {cwd: buildDir + '/meteorProject'});
 }
 
 function createJS() {
@@ -54,7 +53,7 @@ function createJS() {
             "ordered-dict.js",
             "geojson-utils.js",
             "minimongo.js",
-            "application-configuration.js",
+//            "application-configuration.js",
             "standard-app-packages.js",
             "webapp.js",
             "reactive-dict.js",
@@ -89,7 +88,7 @@ function createJS() {
     var out = '';
 
     out = packageFiles.reduce(function(out, filename) {
-        var packageDir = normalize('dist/build/meteorProject/bundle/programs/client/packages');
+        var packageDir = buildDir + '/meteorProject/bundle/programs/client/packages';
         out = out + '\n\n//--------- ' + filename + '-----------\n';
         out = out + fs.readFileSync(packageDir + '/' + filename, {encoding:'UTF-8'});
         return out;
@@ -102,7 +101,7 @@ function createJS() {
         return out;
     }, out);
 
-    fs.writeFileSync(normalize('dist/meteor-blaze-client.js'), out);
+    fs.writeFileSync(outJS, out);
 
 
 }
@@ -149,37 +148,6 @@ function error(message) {
     console.log('ERROR: '+message);
 }
 
-return;
 
 
-var files = [
-    'underscore/underscore.js',
 
-    'meteor/client_environment.js',
-    'meteor/unyielding_queue.js',
-
-    'ejson/ejson.js',
-    'ejson/base64.js',
-    'ejson/stringify.js',
-
-    'minimongo/minimongo.js',
-    'minimongo/wrap_transform.js',
-    'minimongo/id_map.js',
-    'minimongo/objectid.js',
-    'minimongo/selector.js',
-
-    'mongo-livedata/collection.js',
-    'mongo-livedata/local_collection_driver.js',
-
-    'random/random.js'
-
-];
-
-var preamble = 'Package = {};';
-
-var result = files.reduce(function(out, file) {
-    out = out.concat('\n//------------ '+file+' ------------\n' + fs.readFileSync('../vendor/meteor/packages/' + file, 'UTF-8'));
-    return out;
-}, preamble);
-
-fs.writeFileSync('../dist/crater.js', result);
