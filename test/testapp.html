@@ -11,16 +11,10 @@
     </script>
 
     <script>
-        Crater = {
-            renderTemplate: function(templateName, elOrSelector) {
-                var el = _.isString(elOrSelector) ? $(elOrSelector).get(0) : elOrSelector;
-                el && UI.DomRange.insert(UI.render(Template[templateName]).dom, el);
-            }
-        }
+
     </script>
 
     <script>
-        var bodyTemplate = '';
         $('script[type="html/template"]').each(function(idx, el) {
             el = $(el);
             var r = html_scanner.scan(el.html());
@@ -47,7 +41,7 @@
     </div>
 
     <script>
-        Crater.renderTemplate('test', '#tempTemplate');
+        MBC.renderTemplate('test', '#tempTemplate');
     </script>
 </body>
 </html>

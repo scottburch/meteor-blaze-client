@@ -93,6 +93,10 @@ function createJS() {
             "spacebars-compiler/spacebars-compiler.js"
     ];
 
+    var sourceFiles = [
+        'mbc.js'
+    ];
+
     var out = '';
 
     out = packageFiles.reduce(function(out, filename) {
@@ -106,6 +110,13 @@ function createJS() {
         var packageDir = normalize('vendor/meteor/packages');
         out = out + '\n\n//-------------' + filename + '----------\n';
         out = out + fs.readFileSync(packageDir + '/' + filename, {encoding:'UTF-8'});
+        return out;
+    }, out);
+
+    out = sourceFiles.reduce(function(out, filename) {
+        var packageDir = normalize('src');
+        out = out + '\n\n//---------------' + filename + '------------\n';
+        out = out + fs.readFileSync(packageDir + '/' + filename, {encoding: 'UTF-8'});
         return out;
     }, out);
 
