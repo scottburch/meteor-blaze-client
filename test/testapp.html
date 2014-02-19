@@ -1,35 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <script src="../meteor-blaze-client.js"></script>
-    <script src="helpers/test2Helper.js"></script>
-
-    <script>
-        MBC.onTemplatesLoaded(function() {
-
-            Template.test.foo = function () {
-                return Session.get('testing');
-            };
-
-            setTimeout(function () {
-                Session.set('testing', 'THIS IS FOO AGAIN');
-            }, 2000);
-
-            MBC.renderTemplate('test', '#tempTemplate');
-
-        });
-
-        MBC.loadTemplates(['templates/test.html', 'templates/test2.html'], MBC.templatesLoaded);
-
-    </script>
+    <head>
+        <script src="../meteor-blaze-client.js"></script>
+        <script src="helpers/test2Helper.js"></script>
+        <script src="helpers/testHelper.js"></script>
+        <script src="services/testService.js"></script>
 
 
-    <title>test</title>
-</head>
-<body>
-<h1>Body</h1>
+        <script>
+            MBC.loadTemplates(['templates/test.html', 'templates/test2.html'], MBC.templatesLoaded);
+        </script>
 
-<div id="tempTemplate"></div>
 
-</body>
+        <title>test</title>
+    </head>
+    <body>
+        <h1>Body</h1>
+
+        <div id="tempTemplate"></div>
+    </body>
 </html>
